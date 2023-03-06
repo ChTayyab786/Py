@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard Embedding Example</title>
+    <script
+        src="https://unpkg.com/amazon-quicksight-embedding-sdk@1.20.1/dist/quicksight-embedding-js-sdk.min.js"></script>
+    <script type="text/javascript">
+        let embeddedDashboardExperience;
+        function onDashboardLoad(payload) {
+            console.log("Do something when the dashboard is fully loaded.");
+        }
+
+        function onError(payload) {
+            console.log("Do something when the dashboard fails loading");
+        }
+
+        function embedDashboard() {
+            const containerDiv = document.getElementById("embeddingContainer");
+            const options = {
+                url: "https://us-east-1.quicksight.aws.amazon.com/sn/embed/share/accounts/062821569505/dashboards/1e6b365d-167b-4dd8-8da0-bbfb977aebd1?directory_alias=talhababarhttps://us-east-1.quicksight.aws.amazon.com/sn/embed/share/accounts/062821569505/dashboards/1e6b365d-167b-4dd8-8da0-bbfb977aebd1?directory_alias=talhababarhttps://us-east-1.quicksight.aws.amazon.com/sn/embed/share/accounts/062821569505/dashboards/1e6b365d-167b-4dd8-8da0-bbfb977aebd1?directory_alias=talhababar", // replace this value with the url generated via embedding API
+                container: containerDiv,
+                parameters: {
+                    country: "United States",
+                    states: [
+                        "California",
+                        "Washington"
+                    ]
+                },
+                scrolling: "no",
+                height: "700px",
+                width: "1000px",
+                iframeResizeOnSheetChange: false,
+                sheetId: 'YOUR_SHEETID',
+                sheetTabsDisabled: false,
+                locale: "en-US",
+                footerPaddingEnabled: true,
+                printEnabled: false,
+                undoRedoDisabled: false,
+                resetDisabled: false
+            };
+            embeddedDashboardExperience = QuickSightEmbedding.embedDashboard(options);
+            embeddedDashboardExperience.on("error", onError);
+            embeddedDashboardExperience.on("load", onDashboardLoad);
+        }
+
+        function onCountryChange(obj) {
+            embeddedDashboardExperience.setParameters({ country: obj.value });
+        }
+    </script>
+</head>
+
+<body onload="embedDashboard()">
+    <span>
+        <label for="country">Country</label>
+        <select id="country" name="country" onchange="onCountryChange(this)">
+            <option value="United States">United States</option>
+            <option value="Mexico">Mexico</option>
+            <option value="Canada">Canada</option>
+        </select>
+    </span>
+    <div id="embeddingContainer"></div>
+</body>
+
+</html>
